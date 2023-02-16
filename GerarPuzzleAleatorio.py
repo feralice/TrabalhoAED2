@@ -5,10 +5,10 @@ def criaListaAleatoria(estadoInicial):
     random.shuffle(puzzle)
 
     if(verificaSolucionavel(puzzle)):
+        print(puzzle)
         return puzzle
     else:
         criaListaAleatoria(estadoInicial)
-
 
 
 def verificaSolucionavel(puzzle):
@@ -28,5 +28,5 @@ def verificaSolucionavel(puzzle):
         return True
 
 estadoFinal = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-print(criaListaAleatoria(estadoFinal))
+criaListaAleatoria(estadoFinal)
 
