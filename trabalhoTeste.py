@@ -91,3 +91,4 @@ while h>0:
     print_in_format(state)
     print("\nHeuristic Value(Misplaced) : "+str(h))
     
+    print("Fim de jogo")
