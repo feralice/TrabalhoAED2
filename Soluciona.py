@@ -1,32 +1,32 @@
 def buscaInformada(inicial):
-	final = [0,1,2,3,4,5,6,7,8]
+	final = 12345678
 	passos = 0
 	posicoes = []
 	agenda = []
 	passados = {}
 	estado = Estado(inicial,passos)
 	agenda.append(estado)
-	passados[estado.ordem] = estado
+	passados[estado.num] = estado
 	while(len(agenda)>0):
 		estado = agenda[0]
 		posicoes.append(estado)
 		#print("estado: ",estado.numero)
 		agenda.remove(estado)
 		#print(estado.numero)
-		if(estado.ordem==final):
+		if(estado.num==final):
 			break
 		agenda = []
 		lista_trans = estado.transicoes()
 		#print(lista_trans)
 		for est in lista_trans:
 			proximo = Estado(est,estado.g+1)
-			if proximo.numero not in passados:
+			if proximo.num not in passados:
 				agenda.append(proximo)
-				passados[proximo.ordem] = proximo
+				passados[proximo.num] = proximo
 				montar_heap(agenda,len(agenda))
-			elif proximo.g < passados[proximo.ordem].g:
-				passados[proximo.ordem].g = proximo.g
-				passados[proximo.ordem].f = proximo.g + passados[proximo.ordem].h
+			elif proximo.g < passados[proximo.num].g:
+				passados[proximo.num].g = proximo.g
+				passados[proximo.num].f = proximo.g + passados[proximo.num].h
 				montar_heap(agenda,len(agenda))
 		passos += 1
 		#print("agenda: ",agenda)
@@ -56,6 +56,12 @@ def troca(vet,i,j):
 	trocado[i],trocado[j]=trocado[j],trocado[i]
 	return trocado
 
+def valorInt(lista):
+	soma = ""
+	for i in lista:
+		soma=soma+str(i)
+	return int(soma)
+
 def heuristica(vet):
 	heuristica = 0
 	cont = 1
@@ -68,8 +74,8 @@ def heuristica(vet):
 class Estado:
 	def __init__(self, ordem, passos):
 		# Guarda a configuração atual e a coleção de
-		# estados proibidos
 		self.ordem = ordem
+		self.num = valorInt(self.ordem)
 		# Calcule f, g e h
 		self.g = passos
 		self.h = heuristica(self.ordem)
@@ -144,7 +150,7 @@ class Estado:
 			return False 
 
 	def __repr__(self):
-		return "{:04d}".format(self.numero)
+		return "{:09d}".format(self.num)
 
 
 inicial = list(eval(input()))
