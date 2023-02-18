@@ -17,7 +17,7 @@ def buscaInformada(inicial):
 			break
 		agenda = []
 		lista_trans = estado.transicoes()
-		#print(lista_trans)
+		print(lista_trans)
 		for est in lista_trans:
 			proximo = Estado(est,estado.g+1)
 			if proximo.num not in passados:
@@ -92,10 +92,10 @@ class Estado:
 		elif(self.ordem[1]==0):
 			vet_aux1 = troca(self.ordem,1,0)
 			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,1,2)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,1,4)
-			saida.append(vet_aux1)
+			vet_aux2 = troca(self.ordem,1,2)
+			saida.append(vet_aux2)
+			vet_aux3 = troca(self.ordem,1,4)
+			saida.append(vet_aux3)
 		elif(self.ordem[2]==0):
 			vet_aux1 = troca(self.ordem,2,1)
 			saida.append(vet_aux1)
