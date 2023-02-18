@@ -48,6 +48,10 @@ def min_heapify(vetor,raiz,tam):
 		vetor[menor] = aux
 		min_heapify(vetor,menor,tam)
 
+def troca(vet,i,j):
+	trocado = vet
+	trocado[i],trocado[j]=trocado[j],trocado[i]
+	return trocado
 
 def heuristica(numero):
 	heuristica = 0
@@ -72,13 +76,63 @@ class Estado:
 	def transicoes(self):
 		# Complete-me
 		saida = []  # Deve retornar os estados alcançáveis 
-		for i in range(1,5):
-			horario = gira(self.numero, i, 'h')
-			anti = gira(self.numero, i, 'a')
-			if(horario not in self.proibidos) and valorRoda(horario, i) != valorRoda(self.numero, i):
-				saida.append(horario)
-			if(anti not in self.proibidos) and valorRoda(anti, i) != valorRoda(self.numero, i):
-				saida.append(anti)
+		if(self.ordem[0]==0):
+			vet_aux1 = troca(self.ordem,0,1)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,0,3)
+			saida.append(vet_aux1)
+		elif(self.ordem[1]==0):
+			vet_aux1 = troca(self.ordem,1,0)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,1,2)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,1,4)
+			saida.append(vet_aux1)
+		elif(self.ordem[2]==0):
+			vet_aux1 = troca(self.ordem,2,1)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,2,5)
+			saida.append(vet_aux1)
+		elif(self.ordem[3]==0):
+			vet_aux1 = troca(self.ordem,3,0)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,3,4)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,3,6)
+			saida.append(vet_aux1)
+		elif(self.ordem[4]==0):
+			vet_aux1 = troca(self.ordem,4,1)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,4,3)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,4,5)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,4,7)
+			saida.append(vet_aux1)
+		elif(self.ordem[5]==0):
+			vet_aux1 = troca(self.ordem,5,2)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,5,4)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,5,8)
+			saida.append(vet_aux1)
+		elif(self.ordem[6]==0):
+			vet_aux1 = troca(self.ordem,6,3)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,6,7)
+			saida.append(vet_aux1)
+		elif(self.ordem[7]==0):
+			vet_aux1 = troca(self.ordem,7,6)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,7,4)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,7,8)
+			saida.append(vet_aux1)
+		elif(self.ordem[8]==0):
+			vet_aux1 = troca(self.ordem,8,5)
+			saida.append(vet_aux1)
+			vet_aux1 = troca(self.ordem,8,7)
+			saida.append(vet_aux1)
 		return saida
 
 	def __lt__(self, other):
