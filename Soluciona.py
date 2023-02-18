@@ -1,33 +1,36 @@
-'''def buscaInformada(num, proibido):
+def buscaInformada(inicial):
+	final = [0,1,2,3,4,5,6,7,8]
 	passos = 0
+	posicoes = []
 	agenda = []
 	passados = {}
-	estado = Estado(num,proibidos,passos)
+	estado = Estado(inicial,passos)
 	agenda.append(estado)
-	passados[estado.numero] = estado
+	passados[estado.ordem] = estado
 	while(len(agenda)>0):
 		estado = agenda[0]
+		posicoes.append(estado)
 		#print("estado: ",estado.numero)
 		agenda.remove(estado)
 		#print(estado.numero)
-		if(estado.numero==0):
-			return passos
+		if(estado.ordem==final):
+			break
 		agenda = []
 		lista_trans = estado.transicoes()
 		#print(lista_trans)
 		for est in lista_trans:
-			proximo = Estado(est,proibidos,estado.g+1)
+			proximo = Estado(est,estado.g+1)
 			if proximo.numero not in passados:
 				agenda.append(proximo)
-				passados[proximo.numero] = proximo
+				passados[proximo.ordem] = proximo
 				montar_heap(agenda,len(agenda))
-			elif proximo.g < passados[proximo.numero].g:
-				passados[proximo.numero].g = proximo.g
-				passados[proximo.numero].f = proximo.g + passados[proximo.numero].h
+			elif proximo.g < passados[proximo.ordem].g:
+				passados[proximo.ordem].g = proximo.g
+				passados[proximo.ordem].f = proximo.g + passados[proximo.ordem].h
 				montar_heap(agenda,len(agenda))
 		passos += 1
 		#print("agenda: ",agenda)
-	return -1'''
+	return posicoes
 
 def montar_heap(vet,tam):
 	ultimo = (tam//2)-1
@@ -69,7 +72,7 @@ class Estado:
 		self.ordem = ordem
 		# Calcule f, g e h
 		self.g = passos
-		self.h = heuristica(self.numero)
+		self.h = heuristica(self.ordem)
 		self.f = self.g + self.h
 
 	def transicoes(self):
@@ -144,10 +147,5 @@ class Estado:
 		return "{:04d}".format(self.numero)
 
 
-
-valor = int(input())
-while(valor!=-1):
-	proibidos = list(eval(input()))
-	#passos = buscaInformada(valor, proibidos)
-	#print(passos)
-	valor = int(input())
+inicial = list(eval(input()))
+print(buscaInformada(inicial))
