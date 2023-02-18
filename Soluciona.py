@@ -1,4 +1,4 @@
-def buscaInformada(num, proibido):
+'''def buscaInformada(num, proibido):
 	passos = 0
 	agenda = []
 	passados = {}
@@ -27,7 +27,7 @@ def buscaInformada(num, proibido):
 				montar_heap(agenda,len(agenda))
 		passos += 1
 		#print("agenda: ",agenda)
-	return -1
+	return -1'''
 
 def montar_heap(vet,tam):
 	ultimo = (tam//2)-1
@@ -53,14 +53,13 @@ def troca(vet,i,j):
 	trocado[i],trocado[j]=trocado[j],trocado[i]
 	return trocado
 
-def heuristica(numero):
+def heuristica(vet):
 	heuristica = 0
-	botoes = [int(x) for x in str(numero)]
-	for i in botoes:
-		if(i>=5):
-			heuristica = heuristica + (10-i)
-		else:
-			heuristica = heuristica + i
+	cont = 1
+	for i in range(1,len(vet)):
+		if(vet[i]!=cont):
+			heuristica = heuristica + 1
+			cont=cont+1
 	return heuristica
 
 class Estado:
@@ -145,9 +144,10 @@ class Estado:
 		return "{:04d}".format(self.numero)
 
 
+
 valor = int(input())
 while(valor!=-1):
 	proibidos = list(eval(input()))
-	passos = buscaInformada(valor, proibidos)
-	print(passos)
+	#passos = buscaInformada(valor, proibidos)
+	#print(passos)
 	valor = int(input())
