@@ -48,23 +48,6 @@ def min_heapify(vetor,raiz,tam):
 		vetor[menor] = aux
 		min_heapify(vetor,menor,tam)
 
-def valorRoda(config, roda):
-	return (config // 10 ** (4 - roda)) % 10
-
-def gira(config, roda, sentido):
-	peso = 10 ** (4 - roda)
-	
-	digitoAtual = (config // peso) % 10
-
-	if sentido == 'a':
-		proximoDigito = (digitoAtual + 9) % 10
-	else:
-		proximoDigito = (digitoAtual + 1) % 10
-
-	subtrair = digitoAtual * peso
-	somar = proximoDigito * peso
-
-	return config - subtrair + somar
 
 def heuristica(numero):
 	heuristica = 0
@@ -77,11 +60,10 @@ def heuristica(numero):
 	return heuristica
 
 class Estado:
-	def __init__(self, numero, proibidos, passos):
+	def __init__(self, ordem, passos):
 		# Guarda a configuração atual e a coleção de
 		# estados proibidos
-		self.numero = numero
-		self.proibidos = proibidos
+		self.ordem = ordem
 		# Calcule f, g e h
 		self.g = passos
 		self.h = heuristica(self.numero)
