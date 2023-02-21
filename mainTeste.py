@@ -69,7 +69,7 @@ class Game:
         self.listaBotoes.append(Botao(650, 100, 300, 50, "Gerar Aleatório", WHITE, BLACK))
         self.listaBotoes.append(Botao(650, 170, 300, 50, "Recomeçar", WHITE, BLACK))
 
-        #começa um jogo novo e mostra o estado final ao inicializar
+        #começa um jogo novo e mostra o estado final ao inicializar 
         self.draw_tiles()
         
 
