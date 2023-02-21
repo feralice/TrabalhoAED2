@@ -12,9 +12,8 @@ class Game:
         self.clock = pygame.time.Clock()
 
     def create_game(self):
-        grid = [[x + y * GAME_SIZE for x in range(1, GAME_SIZE + 1)] for y in range(GAME_SIZE)]
-        grid[-1][-1] = 0
-        return grid
+        estadoFinal = [[0,1,2],[3,4,5],[6,7,8]]
+        return estadoFinal
 
     def draw_tiles(self):
         self.tiles = []
@@ -27,9 +26,14 @@ class Game:
                     self.tiles[row].append(Tile(self, col, row, "empty"))
         
     def new(self):
+        #cria um novo jogo
         self.all_sprites = pygame.sprite.Group()
         self.tiles_lista = self.create_game()
         self.tiles_lista_completo = self.create_game()
+
+        #começa um jogo novo e mostra o estado final
+        self.draw_tiles()
+
 
 
     def run(self):
@@ -54,7 +58,6 @@ class Game:
         self.screen.fill(BGCOLOUR)
         self.all_sprites.draw(self.screen)
         self.draw_grid()
-        self.draw_tiles()
         pygame.display.flip()
 
     def events(self):
