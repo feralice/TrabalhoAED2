@@ -1,3 +1,4 @@
+#Funcao retorna um conjunto de estados que representam o menor caminho até o estado final
 def buscaInformada(inicial):
 	final = 12345678
 	passos = 0
@@ -10,14 +11,11 @@ def buscaInformada(inicial):
 	while(len(agenda)>0):
 		estado = agenda[0]
 		posicoes.append(estado.ordem)
-		#print("estado: ",estado.numero)
 		agenda.remove(estado)
-		#print(estado.numero)
 		if(estado.num==final):
 			return posicoes
 		agenda = []
 		lista_trans = estado.transicoes()
-		#print(lista_trans)
 		for est in lista_trans:
 			proximo = Estado(est,estado.g+1)
 			if proximo.num not in passados:
@@ -29,7 +27,6 @@ def buscaInformada(inicial):
 				passados[proximo.num].f = proximo.g + passados[proximo.num].h
 				montar_heap(agenda,len(agenda))
 		passos += 1
-		#print("agenda: ",agenda)
 	return -1
 
 def montar_heap(vet,tam):
@@ -64,8 +61,8 @@ def valorInt(lista):
 
 def heuristica(vet):
 	heuristica = 0
-	cont = 0
-	for i in range(0,len(vet)):
+	cont = 1
+	for i in range(1,len(vet)):
 		if(vet[i]!=cont):
 			heuristica = heuristica + 1
 		cont=cont+1
@@ -117,8 +114,4 @@ class Estado:
 
 
 inicial = list(eval(input()))
-'''inicial2 = list(eval(input()))
-est = Estado(inicial,0)
-est2 = Estado(inicial2,0)
-print(est.h,est2.h)'''
 print(buscaInformada(inicial))
