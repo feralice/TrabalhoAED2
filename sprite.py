@@ -25,6 +25,9 @@ class Tile(pygame.sprite.Sprite):
             
             #faz os quadradinhos
             self.image.blit(font_surface,(drawX, drawY))
+        else:
+            self.image.fill(BGCOLOUR)
+
 
     def update(self): #atualizando o quadradinho
         self.rect.x = self.x *TILESIZE
@@ -34,5 +37,19 @@ class Tile(pygame.sprite.Sprite):
     def click(self, mouse_x, mouse_y):
         #checa a posição do mouse
         return self.rect.left <= mouse_x <= self.rect.right and self.rect.top <= mouse_y <= self.rect.bottom
+
+    def checkDireita(self):
+        return self.rect.x + TILESIZE < GAME_SIZE * TILESIZE
+
+    def checkEsquerda(self):
+        return self.rect.x - TILESIZE >= 0
+
+    def checkCima(self):
+        return self.rect.y - TILESIZE >= 0
+
+    def checkBaixo(self):
+        return self.rect.y + TILESIZE < GAME_SIZE * TILESIZE
+
+
 
 
