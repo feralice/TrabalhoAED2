@@ -16,6 +16,7 @@ class Game:
         self.comeca_timer = 0
         self.tempo = 0
         self.ganhou = False
+        self.resolve_aut = False
 
     def create_game(self):
         estadoFinal = [0,1,2,3,4,5,6,7,8]
@@ -70,9 +71,13 @@ class Game:
         self.comeca_jogo = False
         self.comeca_timer = False
         self.listaBotoes = []
-        self.listaBotoes.append(Botao(650, 100, 300, 50, "Gerar Aleatório", WHITE, BLACK))
-        self.listaBotoes.append(Botao(650, 170, 300, 50, "Recomeçar", WHITE, BLACK))
-        self.listaBotoes.append(Botao(650,240,300,50,"Começar jogo",WHITE,BLACK))
+        self.listaBotoes.append(Botao(650, 100, 350, 50, "Gerar Aleatório", WHITE, BLACK))
+        self.listaBotoes.append(Botao(650, 170, 350, 50, "Recomeçar", WHITE, BLACK))
+        self.listaBotoes.append(Botao(650,240,350,50,"Começar jogo",WHITE,BLACK))
+        self.listaBotoes.append(Botao(650,310,350,50,"Resolver automático",WHITE,BLACK))
+
+
+
 
         #começa um jogo novo e mostra o estado final ao inicializar 
         self.draw_tiles()
@@ -88,7 +93,7 @@ class Game:
     
     def update(self):
 
-        if(self.comeca_jogo):
+        if(self.comeca_jogo ):
 
             if(self.tiles_lista == self.tiles_lista_completo):
                 self.comeca_jogo = False
@@ -128,7 +133,7 @@ class Game:
         for botao in self.listaBotoes:
            botao.draw(self.screen)
 
-        ElemGraficos(750,35,"%.2f" % self.tempo).draw(self.screen)
+        ElemGraficos(780,35,"%.2f" % self.tempo).draw(self.screen)
 
         if(self.ganhou):
             ElemGraficos(200,500,"Parabéns!!! Você ganhou :D").draw(self.screen)
@@ -142,7 +147,7 @@ class Game:
                 pygame.quit()
                 quit(0)
 
-            if(event.type == pygame.MOUSEBUTTONDOWN):
+            if(event.type == pygame.MOUSEBUTTONDOWN and not self.resolve_aut):
 
                 mouseX, mouseY = pygame.mouse.get_pos()
 
@@ -176,6 +181,13 @@ class Game:
                         if(botao.text=="Começar jogo" and self.tiles_lista!=self.tiles_lista_completo):
                             self.comeca_jogo = True
                             self.comeca_timer =True
+
+                        if(botao.text=="Resolver automático" and self.tiles_lista!=self.tiles_lista_completo):
+                            self.resolve_aut = True 
+                            self.comeca_timer = True
+                            self.comeca_jogo = True
+                            
+                            
 
 
 
