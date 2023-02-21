@@ -2,31 +2,38 @@
 def buscaInformada(inicial):
 	final = 12345678
 	passos = 0
-	posicoes = []
+	#lista com o menor caminho até o estado final
+	caminho = []
+	#lista a ser fila de prioridade
 	agenda = []
-	passados = {}
+	#Dicionário criado para armazenar estados passados
+	estados_passados = {}
 	estado = Estado(inicial,passos)
 	agenda.append(estado)
-	passados[estado.num] = estado
+	estados_passados[estado.num] = estado
 	while(len(agenda)>0):
+		#retira primeiro valor da fila de prioridade
 		estado = agenda[0]
-		posicoes.append(estado.ordem)
+		caminho.append(estado.ordem)
 		agenda.remove(estado)
+		#Se achou estado final, retorna caminho e passos dados
 		if(estado.num==final):
-			return posicoes
+			return caminho,passos
 		agenda = []
 		lista_trans = estado.transicoes()
 		for est in lista_trans:
+			#gera um objeto da classe Estado para cada transição possível
 			proximo = Estado(est,estado.g+1)
-			if proximo.num not in passados:
+			if proximo.num not in estados_passados:
 				agenda.append(proximo)
-				passados[proximo.num] = proximo
+				estados_passados[proximo.num] = proximo
 				montar_heap(agenda,len(agenda))
-			elif proximo.g < passados[proximo.num].g:
-				passados[proximo.num].g = proximo.g
-				passados[proximo.num].f = proximo.g + passados[proximo.num].h
+			elif proximo.g < estados_passados[proximo.num].g:
+				estados_passados[proximo.num].g = proximo.g
+				estados_passados[proximo.num].f = proximo.g + estados_passados[proximo.num].h
 				montar_heap(agenda,len(agenda))
 		passos += 1
+	#retorna -1 se não houver solucao
 	return -1
 
 def montar_heap(vet,tam):
@@ -114,4 +121,5 @@ class Estado:
 
 
 inicial = list(eval(input()))
-print(buscaInformada(inicial))
+caminho, passos = buscaInformada(inicial)
+print("Caminho: ",caminho,"em ",passos,"passos")
