@@ -81,67 +81,36 @@ class Estado:
 		self.h = heuristica(self.ordem)
 		self.f = self.g + self.h
 
-	def transicoes(self):
-		# Complete-me
-		saida = []  # Deve retornar os estados alcançáveis 
-		if(self.ordem[0]==0):
-			vet_aux1 = troca(self.ordem,0,1)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,0,3)
-			saida.append(vet_aux1)
-		elif(self.ordem[1]==0):
-			vet_aux1 = troca(self.ordem,1,0)
-			saida.append(vet_aux1)
-			vet_aux2 = troca(self.ordem,1,2)
-			saida.append(vet_aux2)
-			vet_aux3 = troca(self.ordem,1,4)
-			saida.append(vet_aux3)
-		elif(self.ordem[2]==0):
-			vet_aux1 = troca(self.ordem,2,1)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,2,5)
-			saida.append(vet_aux1)
-		elif(self.ordem[3]==0):
-			vet_aux1 = troca(self.ordem,3,0)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,3,4)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,3,6)
-			saida.append(vet_aux1)
-		elif(self.ordem[4]==0):
-			vet_aux1 = troca(self.ordem,4,1)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,4,3)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,4,5)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,4,7)
-			saida.append(vet_aux1)
-		elif(self.ordem[5]==0):
-			vet_aux1 = troca(self.ordem,5,2)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,5,4)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,5,8)
-			saida.append(vet_aux1)
-		elif(self.ordem[6]==0):
-			vet_aux1 = troca(self.ordem,6,3)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,6,7)
-			saida.append(vet_aux1)
-		elif(self.ordem[7]==0):
-			vet_aux1 = troca(self.ordem,7,6)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,7,4)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,7,8)
-			saida.append(vet_aux1)
-		elif(self.ordem[8]==0):
-			vet_aux1 = troca(self.ordem,8,5)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,8,7)
-			saida.append(vet_aux1)
-		return saida
+	def transicoes(self, estado):
+		posicao_vazia = estado.index(0)
+
+		alcancaveis = []
+
+		if posicao_vazia > 2:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia-3] = novo_estado[posicao_vazia-3], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
+
+		if posicao_vazia < 6:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia+3] = novo_estado[posicao_vazia+3], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
+
+		if posicao_vazia % 3 != 0:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia-1] = novo_estado[posicao_vazia-1], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
+
+		if posicao_vazia % 3 != 2:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia+1] = novo_estado[posicao_vazia+1], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
+
+		return alcancaveis
+    
+    	
+
+
 
 	def __lt__(self, other):
 		if(self.f<=other.f):
