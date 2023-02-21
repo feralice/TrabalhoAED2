@@ -81,11 +81,9 @@ class Estado:
 		self.h = heuristica(self.ordem)
 		self.f = self.g + self.h
 
-	def transicoes(self, estado):
-		posicao_vazia = estado.index(0)
-
+	def transicoes(self):
+		posicao_vazia = self.ordem.index(0)
 		alcancaveis = []
-
 		if posicao_vazia > 2:
 			novo_estado = self.ordem.copy()
 			novo_estado[posicao_vazia], novo_estado[posicao_vazia-3] = novo_estado[posicao_vazia-3], novo_estado[posicao_vazia]
