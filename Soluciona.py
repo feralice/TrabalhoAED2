@@ -9,15 +9,15 @@ def buscaInformada(inicial):
 	passados[estado.num] = estado
 	while(len(agenda)>0):
 		estado = agenda[0]
-		posicoes.append(estado)
+		posicoes.append(estado.ordem)
 		#print("estado: ",estado.numero)
 		agenda.remove(estado)
 		#print(estado.numero)
 		if(estado.num==final):
-			break
+			return posicoes
 		agenda = []
 		lista_trans = estado.transicoes()
-		print(lista_trans)
+		#print(lista_trans)
 		for est in lista_trans:
 			proximo = Estado(est,estado.g+1)
 			if proximo.num not in passados:
@@ -30,7 +30,7 @@ def buscaInformada(inicial):
 				montar_heap(agenda,len(agenda))
 		passos += 1
 		#print("agenda: ",agenda)
-	return posicoes
+	return -1
 
 def montar_heap(vet,tam):
 	ultimo = (tam//2)-1
@@ -64,11 +64,11 @@ def valorInt(lista):
 
 def heuristica(vet):
 	heuristica = 0
-	cont = 1
-	for i in range(1,len(vet)):
+	cont = 0
+	for i in range(0,len(vet)):
 		if(vet[i]!=cont):
 			heuristica = heuristica + 1
-			cont=cont+1
+		cont=cont+1
 	return heuristica
 
 class Estado:
@@ -82,69 +82,32 @@ class Estado:
 		self.f = self.g + self.h
 
 	def transicoes(self):
-		# Complete-me
-		saida = []  # Deve retornar os estados alcançáveis 
-		if(self.ordem[0]==0):
-			vet_aux1 = troca(self.ordem,0,1)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,0,3)
-			saida.append(vet_aux1)
-		elif(self.ordem[1]==0):
-			vet_aux1 = troca(self.ordem,1,0)
-			saida.append(vet_aux1)
-			vet_aux2 = troca(self.ordem,1,2)
-			saida.append(vet_aux2)
-			vet_aux3 = troca(self.ordem,1,4)
-			saida.append(vet_aux3)
-		elif(self.ordem[2]==0):
-			vet_aux1 = troca(self.ordem,2,1)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,2,5)
-			saida.append(vet_aux1)
-		elif(self.ordem[3]==0):
-			vet_aux1 = troca(self.ordem,3,0)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,3,4)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,3,6)
-			saida.append(vet_aux1)
-		elif(self.ordem[4]==0):
-			vet_aux1 = troca(self.ordem,4,1)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,4,3)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,4,5)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,4,7)
-			saida.append(vet_aux1)
-		elif(self.ordem[5]==0):
-			vet_aux1 = troca(self.ordem,5,2)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,5,4)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,5,8)
-			saida.append(vet_aux1)
-		elif(self.ordem[6]==0):
-			vet_aux1 = troca(self.ordem,6,3)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,6,7)
-			saida.append(vet_aux1)
-		elif(self.ordem[7]==0):
-			vet_aux1 = troca(self.ordem,7,6)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,7,4)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,7,8)
-			saida.append(vet_aux1)
-		elif(self.ordem[8]==0):
-			vet_aux1 = troca(self.ordem,8,5)
-			saida.append(vet_aux1)
-			vet_aux1 = troca(self.ordem,8,7)
-			saida.append(vet_aux1)
-		return saida
+		posicao_vazia = self.ordem.index(0)
+		alcancaveis = []
+		if posicao_vazia > 2:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia-3] = novo_estado[posicao_vazia-3], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
 
+		if posicao_vazia < 6:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia+3] = novo_estado[posicao_vazia+3], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
+
+		if posicao_vazia % 3 != 0:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia-1] = novo_estado[posicao_vazia-1], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
+
+		if posicao_vazia % 3 != 2:
+			novo_estado = self.ordem.copy()
+			novo_estado[posicao_vazia], novo_estado[posicao_vazia+1] = novo_estado[posicao_vazia+1], novo_estado[posicao_vazia]
+			alcancaveis.append(novo_estado)
+
+		return alcancaveis
+    
 	def __lt__(self, other):
-		if(self.f<=other.f):
+		if(self.f<other.f):
 			return True
 		else:
 			return False 
@@ -154,4 +117,8 @@ class Estado:
 
 
 inicial = list(eval(input()))
+'''inicial2 = list(eval(input()))
+est = Estado(inicial,0)
+est2 = Estado(inicial2,0)
+print(est.h,est2.h)'''
 print(buscaInformada(inicial))
