@@ -36,11 +36,13 @@ def buscaInformada(inicial):
 	#retorna -1 se não houver solucao
 	return -1
 
+#Funcao para montar heap minima/fila de prioridade
 def montar_heap(vet,tam):
 	ultimo = (tam//2)-1
 	for i in range(ultimo,-1,-1):
 		min_heapify(vet,i,tam)
 
+#Funcao para aplicar min_heapify em cada elemento de um dado vetor
 def min_heapify(vetor,raiz,tam):
 	menor = raiz
 	esq = 2 * raiz + 1
@@ -55,67 +57,68 @@ def min_heapify(vetor,raiz,tam):
 		vetor[menor] = aux
 		min_heapify(vetor,menor,tam)
 
-def troca(vet,i,j):
-	trocado = vet
-	trocado[i],trocado[j]=trocado[j],trocado[i]
-	return trocado
-
+#Funcao que pega uma lista e retorna um valor inteiro com os dados da lista
+#Usada para gerar um atributo unico para cada objeto, para poder utilizar no dicionário
 def valorInt(lista):
-	soma = ""
-	for i in lista:
-		soma=soma+str(i)
-	return int(soma)
+	inteiro = ""
+	for valor_lista in lista:
+		inteiro=inteiro+str(valor_lista) 
+	return int(inteiro)
 
+#Calcula heuristica verificando quantos valores não estão no seu devido lugar (zero nao conta)
 def heuristica(vet):
 	heuristica = 0
-	cont = 1
-	for i in range(1,len(vet)):
-		if(vet[i]!=cont):
+	valor_ideal = 1
+	for valor_atual in range(1,len(vet)):
+		if(vet[valor_atual]!=valor_ideal):
 			heuristica = heuristica + 1
-		cont=cont+1
+		valor_ideal=valor_ideal+1
 	return heuristica
 
 class Estado:
 	def __init__(self, ordem, passos):
-		# Guarda a configuração atual e a jeção de
+		#Recebe a lista com a ordem e gera um inteiro a partir da lista
 		self.ordem = ordem
 		self.num = valorInt(self.ordem)
-		# Calcule f, g e h
+		# Calcula f, g e h
 		self.g = passos
 		self.h = heuristica(self.ordem)
 		self.f = self.g + self.h
 
+	#Retorna uma lista com todas as transicoes possiveis
 	def transicoes(self):
+		#pega o valor que esta o 0
 		posicao_vazia = self.ordem.index(0)
 		alcancaveis = []
+		#verifica se posicao vazia ta na primeira linha
 		if posicao_vazia > 2:
 			novo_estado = self.ordem.copy()
 			novo_estado[posicao_vazia], novo_estado[posicao_vazia-3] = novo_estado[posicao_vazia-3], novo_estado[posicao_vazia]
 			alcancaveis.append(novo_estado)
-
+		#verifica se posicao vazia ta na ultima linha
 		if posicao_vazia < 6:
 			novo_estado = self.ordem.copy()
 			novo_estado[posicao_vazia], novo_estado[posicao_vazia+3] = novo_estado[posicao_vazia+3], novo_estado[posicao_vazia]
 			alcancaveis.append(novo_estado)
-
+		#verifica se posicao vazia ta na primeira coluna
 		if posicao_vazia % 3 != 0:
 			novo_estado = self.ordem.copy()
 			novo_estado[posicao_vazia], novo_estado[posicao_vazia-1] = novo_estado[posicao_vazia-1], novo_estado[posicao_vazia]
 			alcancaveis.append(novo_estado)
-
+		#verifica se posicao vazia ta na ultima coluna
 		if posicao_vazia % 3 != 2:
 			novo_estado = self.ordem.copy()
 			novo_estado[posicao_vazia], novo_estado[posicao_vazia+1] = novo_estado[posicao_vazia+1], novo_estado[posicao_vazia]
 			alcancaveis.append(novo_estado)
 
 		return alcancaveis
-    
+    #sobrecarga de operador lower than, a partir do atributo self.f
 	def __lt__(self, other):
 		if(self.f<other.f):
 			return True
 		else:
 			return False 
-
+	#somente para representar o valor inteiro com 9 digitos
 	def __repr__(self):
 		return "{:09d}".format(self.num)
 
