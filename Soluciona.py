@@ -34,7 +34,7 @@ def buscaInformada(inicial):
 				montar_heap(agenda,len(agenda))
 		passos += 1
 	#retorna -1 se não houver solucao
-	return -1
+	return -1, -1
 
 #Funcao para montar heap minima/fila de prioridade
 def montar_heap(vet,tam):

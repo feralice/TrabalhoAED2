@@ -11,12 +11,16 @@ class Game:
         pygame.display.set_caption(title)
         self.clock = pygame.time.Clock()
         self.tempo_aleatorio = 0
-        self.bCria_aleatorio = False
+        self.cria_aleatorio = False
+        self.comeca_jogo = False
+        self.comeca_timer = 0
+        self.tempo = 0
+        self.ganhou = False
 
     def create_game(self):
         estadoFinal = [0,1,2,3,4,5,6,7,8]
         return estadoFinal
-    
+     
     def eh_solucionavel(self, puzzle):
             numInversoes = 0
 
@@ -44,8 +48,6 @@ class Game:
         else:
            return self.cria_lista_aleatoria()
 
-        print(self.tiles_lista)
- 
 
     def draw_tiles(self):
         self.tiles = []
@@ -64,10 +66,13 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.tiles_lista = self.create_game()
         self.tiles_lista_completo = self.create_game()
-
+        self.tempo = 0
+        self.comeca_jogo = False
+        self.comeca_timer = False
         self.listaBotoes = []
         self.listaBotoes.append(Botao(650, 100, 300, 50, "Gerar Aleatório", WHITE, BLACK))
         self.listaBotoes.append(Botao(650, 170, 300, 50, "Recomeçar", WHITE, BLACK))
+        self.listaBotoes.append(Botao(650,240,300,50,"Começar jogo",WHITE,BLACK))
 
         #começa um jogo novo e mostra o estado final ao inicializar 
         self.draw_tiles()
@@ -82,15 +87,29 @@ class Game:
             self.draw()
     
     def update(self):
-        self.all_sprites.update()
 
-        if(self.bCria_aleatorio and self.tempo_aleatorio<=100):
+        if(self.comeca_jogo):
+
+            if(self.tiles_lista == self.tiles_lista_completo):
+                self.comeca_jogo = False
+                self.ganhou = True
+                
+            if(self.comeca_timer):
+                self.timer = time.time()
+                self.comeca_timer = False
+
+            self.tempo = time.time() - self.timer
+
+        if(self.cria_aleatorio):
             self.cria_lista_aleatoria()
             self.draw_tiles()
             self.tempo_aleatorio +=1
 
-        if(self.tiles_lista_completo == self.tiles_lista and self.tempo_aleatorio!=0):
-            print("vc ganhou!")
+            if(self.tempo_aleatorio > 50):
+                self.cria_aleatorio = False
+
+        self.all_sprites.update()
+        
         
 
     def draw_grid(self):
@@ -108,6 +127,11 @@ class Game:
         #cria os botoes do jogo
         for botao in self.listaBotoes:
            botao.draw(self.screen)
+
+        ElemGraficos(750,35,"%.2f" % self.tempo).draw(self.screen)
+
+        if(self.ganhou):
+            ElemGraficos(200,500,"Parabéns!!! Você ganhou :D").draw(self.screen)
 
         pygame.display.flip()
 
@@ -144,12 +168,14 @@ class Game:
                     if(botao.click(mouseX,mouseY)):
                         if(botao.text == "Gerar Aleatório"):
                             self.tempo_aleatorio = 0
-                            self.bCria_aleatorio = True
+                            self.cria_aleatorio = True
 
-                        elif(botao.text=="Recomeçar"):
+                        if(botao.text=="Recomeçar"):
                             self.new()
 
-
+                        if(botao.text=="Começar jogo" and self.tiles_lista!=self.tiles_lista_completo):
+                            self.comeca_jogo = True
+                            self.comeca_timer =True
 
 
 
