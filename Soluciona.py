@@ -9,15 +9,15 @@ def buscaInformada(inicial):
 	passados[estado.num] = estado
 	while(len(agenda)>0):
 		estado = agenda[0]
-		posicoes.append(estado)
+		posicoes.append(estado.ordem)
 		#print("estado: ",estado.numero)
 		agenda.remove(estado)
 		#print(estado.numero)
 		if(estado.num==final):
-			break
+			return posicoes
 		agenda = []
 		lista_trans = estado.transicoes()
-		print(lista_trans)
+		#print(lista_trans)
 		for est in lista_trans:
 			proximo = Estado(est,estado.g+1)
 			if proximo.num not in passados:
@@ -30,7 +30,7 @@ def buscaInformada(inicial):
 				montar_heap(agenda,len(agenda))
 		passos += 1
 		#print("agenda: ",agenda)
-	return posicoes
+	return -1
 
 def montar_heap(vet,tam):
 	ultimo = (tam//2)-1
@@ -64,11 +64,11 @@ def valorInt(lista):
 
 def heuristica(vet):
 	heuristica = 0
-	cont = 1
-	for i in range(1,len(vet)):
+	cont = 0
+	for i in range(0,len(vet)):
 		if(vet[i]!=cont):
 			heuristica = heuristica + 1
-			cont=cont+1
+		cont=cont+1
 	return heuristica
 
 class Estado:
@@ -106,12 +106,8 @@ class Estado:
 
 		return alcancaveis
     
-    	
-
-
-
 	def __lt__(self, other):
-		if(self.f<=other.f):
+		if(self.f<other.f):
 			return True
 		else:
 			return False 
@@ -121,4 +117,8 @@ class Estado:
 
 
 inicial = list(eval(input()))
+'''inicial2 = list(eval(input()))
+est = Estado(inicial,0)
+est2 = Estado(inicial2,0)
+print(est.h,est2.h)'''
 print(buscaInformada(inicial))
