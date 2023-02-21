@@ -26,7 +26,7 @@ class Tile(pygame.sprite.Sprite):
             #faz os quadradinhos
             self.image.blit(font_surface,(drawX, drawY))
         else:
-            self.image.fill(BGCOLOUR)
+            self.image.fill(BGjOUR)
 
 
     def update(self): #atualizando o quadradinho
@@ -49,6 +49,47 @@ class Tile(pygame.sprite.Sprite):
 
     def checkBaixo(self):
         return self.rect.y + TILESIZE < GAME_SIZE * TILESIZE
+
+class ElemGraficos:
+    def __init__(self, x, y, text):
+        self.x = x
+        self.y = y
+        self.text = text
+
+    def draw(self,screen):
+        font = pygame.font.SysFont("Consolas",50) #escolhe a fonte
+        text = font.render(self.text, True, WHITE)
+        screen.blit(text, (self.x,self.y))
+
+class Botao:
+    def __init__(self, x, y, largura, altura, text, cor, corTexto):
+        self.x = x
+        self.y = y
+        self.largura = largura
+        self.altura = altura
+        self.text = text
+        self.cor = cor
+        self.corTexto = corTexto
+
+    def draw(self, screen):
+
+        #desenha um retangulo
+        pygame.draw.rect(screen, self.cor, (self.x, self.y, self.largura, self.altura))
+
+        font = pygame.font.SysFont("Consolas",30) #escolhe a fonte
+        text = font.render(self.text, True, self.corTexto)
+        self.font_size = font.size(self.text)
+
+        drawX = self.x + (self.largura/2) - self.font_size[0]/2
+        drawY = self.y + (self.altura/2) - self.font_size[1]/2
+            
+        screen.blit(text,(drawX, drawY))
+
+    def click(self, mouse_x, mouse_y):
+        #checa a posição do mouse
+        return self.x <= mouse_x <= self.x + self.largura and self.y <= mouse_y <= self.y + self.altura
+
+        
 
 
 

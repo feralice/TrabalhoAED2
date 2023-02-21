@@ -73,7 +73,7 @@ def heuristica(vet):
 
 class Estado:
 	def __init__(self, ordem, passos):
-		# Guarda a configuração atual e a coleção de
+		# Guarda a configuração atual e a jeção de
 		self.ordem = ordem
 		self.num = valorInt(self.ordem)
 		# Calcule f, g e h
