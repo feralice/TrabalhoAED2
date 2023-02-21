@@ -76,7 +76,7 @@ class Botao:
         #desenha um retangulo
         pygame.draw.rect(screen, self.cor, (self.x, self.y, self.largura, self.altura))
 
-        font = pygame.font.SysFont("Consolas",30) #escolhe a fonte
+        font = pygame.font.SysFont("Consolas", 30) #escolhe a fonte
         text = font.render(self.text, True, self.corTexto)
         self.font_size = font.size(self.text)
 
