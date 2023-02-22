@@ -123,6 +123,6 @@ class Estado:
 		return "{:09d}".format(self.num)
 
 
-inicial = list(eval(input()))
-caminho, passos = buscaInformada(inicial)
-print("Caminho: ",caminho,"em ",passos,"passos")
+#inicial = list(eval(input()))
+#caminho, passos = buscaInformada(inicial)
+#print("Caminho: ",caminho,"em ",passos,"passos")

@@ -3,6 +3,7 @@ import random
 import time
 from configuracoes import *
 from sprite import *
+from Soluciona import buscaInformada
 
 class Game:
     def __init__(self):
@@ -16,6 +17,7 @@ class Game:
         self.comeca_timer = 0
         self.tempo = 0
         self.ganhou = False
+        self.semsolucao = False
         self.resolve_aut = False
 
     def create_game(self):
@@ -112,6 +114,17 @@ class Game:
 
             if(self.tempo_aleatorio > 50):
                 self.cria_aleatorio = False
+                
+        if(self.resolve_aut):
+            if(self.resolve_aut):
+                if(self.caminho != -1 and self.contador != len(self.caminho)):
+                    self.tiles_lista = self.caminho[self.contador]
+                    self.draw_tiles()
+                    self.contador += 1
+            else:
+                self.resolve_aut = False
+                
+        
 
         self.all_sprites.update()
         
@@ -184,6 +197,8 @@ class Game:
 
                         if(botao.text=="Resolver automático" and self.tiles_lista!=self.tiles_lista_completo):
                             self.resolve_aut = True 
+                            self.contador = 0
+                            self.caminho, self.passos = buscaInformada(self.tiles_lista)
                             self.comeca_timer = True
                             self.comeca_jogo = True
                             
