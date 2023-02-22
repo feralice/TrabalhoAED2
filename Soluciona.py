@@ -114,7 +114,7 @@ class Estado:
 		return alcancaveis
     #sobrecarga de operador lower than, a partir do atributo self.f
 	def __lt__(self, other):
-		if(self.f<other.f):
+		if(self.f<=other.f):
 			return True
 		else:
 			return False 
