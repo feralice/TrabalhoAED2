@@ -116,11 +116,20 @@ class Game:
                 self.cria_aleatorio = False
                 
         if(self.resolve_aut):
-            if(self.resolve_aut):
-                if(self.caminho != -1 and self.contador != len(self.caminho)):
+            
+            #print(self.caminho)
+            #print(self.passos)
+        
+            if(self.caminho != -1 and self.contador != len(self.caminho)):
                     self.tiles_lista = self.caminho[self.contador]
                     self.draw_tiles()
                     self.contador += 1
+            elif(self.caminho == -1 and self.passos == -1):
+                    self.resolve_aut = False
+                    self.semsolucao = True
+                    print(self.caminho)
+                    print(self.passos)
+                
             else:
                 self.resolve_aut = False
                 
@@ -150,6 +159,11 @@ class Game:
 
         if(self.ganhou):
             ElemGraficos(200,500,"Parabéns!!! Você ganhou :D").draw(self.screen)
+
+        pygame.display.flip()
+        
+        if(self.semsolucao):
+            ElemGraficos(200,500,"Sem solução :(").draw(self.screen)
 
         pygame.display.flip()
 
