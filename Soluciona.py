@@ -1,5 +1,9 @@
 from queue import PriorityQueue
 
+"""
+Módulo para resolver automaticamente o 8puzzle utilizando o algoritmo A* e filas de prioridades
+"""
+
 #Funcao retorna um conjunto de estados que representam o menor caminho até o estado final
 def buscaInformada(inicial):
 	final = 12345678
@@ -97,8 +101,3 @@ class Estado:
 	#somente para representar o valor inteiro com 9 digitos
 	def __repr__(self):
 		return "{:09d}".format(self.num)
-
-
-#inicial = list(eval(input()))
-#caminho, passos = buscaInformada(inicial)
-#print("Caminho: ",caminho,"em ",passos,"passos")
