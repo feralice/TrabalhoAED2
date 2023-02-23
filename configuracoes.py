@@ -1,16 +1,15 @@
-#Configurações para a interface
+#Configurações da interface
 
-# jORS (r, g, b)
-WHITE = (202, 201, 255)
-BLACK = (0, 0, 0)
-DARKGREY = (40, 40, 40)
-LIGHTGREY = (100, 100, 100)
-BGjOUR = DARKGREY
+#Definições das cores utilizando RGB para usarmos no game 
+LILAS = (202, 201, 255)
+PRETO = (0, 0, 0)
+CINZA = (40, 40, 40)
+CINZA_CLARO = (100, 100, 100)
 
-# game settings
-WIDTH = 1100
-HEIGHT = 641
+#Configurações do jogo, tamanho, titulo
+LARGURA = 1100
+ALTURA = 641
 FPS = 60
-title = "Quebra cabeça de 8 peças"
-TILESIZE = 128
-GAME_SIZE = 3
+TITULO = "Quebra cabeça de 8 peças"
+TAM_QUADRADO = 128
+TAM_JOGO = 3
