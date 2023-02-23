@@ -3,6 +3,7 @@ from queue import PriorityQueue
 #Funcao retorna um conjunto de estados que representam o menor caminho até o estado final
 def buscaInformada(inicial):
 	final = 12345678
+	passos = 0
 	#lista a ser fila de prioridade
 	agenda = PriorityQueue()
 	#Conjunto criado para armazenar estados passados
