@@ -17,7 +17,7 @@ def buscaInformada(inicial):
 		if(estado.num==final):
 			caminho = []
 			while estado is not None:
-				caminho.append(estado)
+				caminho.append(estado.ordem)
 				estado = estado.antecessor
 			#len(caminho) para indicar quantidade de passos dados
 			return caminho[::-1],len(caminho)
