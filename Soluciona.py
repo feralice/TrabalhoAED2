@@ -1,35 +1,61 @@
-from queue import PriorityQueue
-
 #Funcao retorna um conjunto de estados que representam o menor caminho até o estado final
 def buscaInformada(inicial):
 	final = 12345678
 	passos = 0
+	#lista com o menor caminho até o estado final
+	caminho = []
 	#lista a ser fila de prioridade
-	agenda = PriorityQueue()
-	#Conjunto criado para armazenar estados passados
-	estados_passados = set()
+	agenda = []
+	#Dicionário criado para armazenar estados passados
+	estados_passados = {}
 	estado = Estado(inicial,passos)
-	agenda.put(estado)
-	while not agenda.empty():
+	agenda.append(estado)
+	estados_passados[estado.num] = estado
+	while(len(agenda)>0):
 		#retira primeiro valor da fila de prioridade
-		estado = agenda.get()
+		estado = agenda[0]
+		caminho.append(estado.ordem)
+		agenda.remove(estado)
 		#Se achou estado final, retorna caminho e passos dados
 		if(estado.num==final):
-			caminho = []
-			while estado is not None:
-				caminho.append(estado)
-				estado = estado.antecessor
-			#len(caminho) para indicar quantidade de passos dados
-			return caminho[::-1],len(caminho)
-		estados_passados.add(estado.num)
+			return caminho,passos
+		agenda = []
 		lista_trans = estado.transicoes()
-		for alcancaveis in lista_trans:
+		for est in lista_trans:
 			#gera um objeto da classe Estado para cada transição possível
-			proximo = Estado(alcancaveis,estado.g+1,estado)
+			proximo = Estado(est,estado.g+1)
 			if proximo.num not in estados_passados:
-				agenda.put(proximo)
+				agenda.append(proximo)
+				estados_passados[proximo.num] = proximo
+				montar_heap(agenda,len(agenda))
+			elif proximo.g < estados_passados[proximo.num].g:
+				estados_passados[proximo.num].g = proximo.g
+				estados_passados[proximo.num].f = proximo.g + estados_passados[proximo.num].h
+				montar_heap(agenda,len(agenda))
+		passos += 1
 	#retorna -1 se não houver solucao
 	return -1,-1
+
+#Funcao para montar heap minima/fila de prioridade
+def montar_heap(vet,tam):
+	ultimo = (tam//2)-1
+	for i in range(ultimo,-1,-1):
+		min_heapify(vet,i,tam)
+
+#Funcao para aplicar min_heapify em cada elemento de um dado vetor
+def min_heapify(vetor,raiz,tam):
+	menor = raiz
+	esq = 2 * raiz + 1
+	if(esq < tam and vetor[esq]<vetor[menor]):
+		menor = esq
+	dire = 2 * raiz + 2
+	if(dire < tam and vetor[dire]<vetor[menor]):
+		menor = dire
+	if(menor!=raiz):
+		aux = vetor[raiz]
+		vetor[raiz] = vetor[menor]
+		vetor[menor] = aux
+		min_heapify(vetor,menor,tam)
 
 #Funcao que pega uma lista e retorna um valor inteiro com os dados da lista
 #Usada para gerar um atributo unico para cada objeto, para poder utilizar no dicionário
@@ -50,7 +76,7 @@ def heuristica(vet):
 	return heuristica
 
 class Estado:
-	def __init__(self, ordem, passos,antecessor = None):
+	def __init__(self, ordem, passos):
 		#Recebe a lista com a ordem e gera um inteiro a partir da lista
 		self.ordem = ordem
 		self.num = valorInt(self.ordem)
@@ -58,8 +84,6 @@ class Estado:
 		self.g = passos
 		self.h = heuristica(self.ordem)
 		self.f = self.g + self.h
-		# atributo para verificar de onde esse estado veio
-		self.antecessor = antecessor
 
 	#Retorna uma lista com todas as transicoes possiveis
 	def transicoes(self):
@@ -90,7 +114,7 @@ class Estado:
 		return alcancaveis
     #sobrecarga de operador lower than, a partir do atributo self.f
 	def __lt__(self, other):
-		if(self.f<=other.f):
+		if(self.f<other.f):
 			return True
 		else:
 			return False 
@@ -99,6 +123,6 @@ class Estado:
 		return "{:09d}".format(self.num)
 
 
-#inicial = list(eval(input()))
-#caminho, passos = buscaInformada(inicial)
-#print("Caminho: ",caminho,"em ",passos,"passos")
+inicial = list(eval(input()))
+caminho, passos = buscaInformada(inicial)
+print("Caminho: ",caminho,"em ",passos,"passos")
