@@ -1,6 +1,8 @@
 import pygame
 from configuracoes import *
 
+"""Módulo para os objetos gráficos"""
+
 #inicializa pygame
 pygame.font.init()
 
