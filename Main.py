@@ -1,7 +1,7 @@
 import pygame
 import random
 import time
-from Configuracoes import *
+from configuracoes import *
 from Sprites import *
 from Soluciona import buscaInformada
 
