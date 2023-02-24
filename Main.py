@@ -1,7 +1,7 @@
 import pygame
 import random
 import time
-from configuracoes import *
+from Configuracoes import *
 from Sprites import *
 from Soluciona import buscaInformada
 
@@ -46,6 +46,10 @@ class Jogo:
 
         #variável para controlar o resolvimento automatico
         self.resolve_aut = False
+
+        #variaveis para controlar o tempo de frases na tela
+        self.clock = pygame.time.Clock()
+        self.tempo_tela = None
 
     #função para criar o jogo com o estado final que desejamos
     def cria_jogo(self):
@@ -119,10 +123,10 @@ class Jogo:
         #cria uma lista para guardar todos os botões que iremos utilizar
         self.listaBotoes = []
         #cria os botoões e adiciona eles na lista
-        self.listaBotoes.append(Botao(650, 100, 350, 50, "Gerar Aleatório", LILAS, PRETO))
-        self.listaBotoes.append(Botao(650, 170, 350, 50, "Recomeçar", LILAS, PRETO))
-        self.listaBotoes.append(Botao(650,240,350,50,"Começar jogo",LILAS,PRETO))
-        self.listaBotoes.append(Botao(650,310,350,50,"Resolver automático",LILAS,PRETO))
+        self.listaBotoes.append(Botao(650, 120, 380, 55, "Gerar Aleatório", LILAS, PRETO))
+        self.listaBotoes.append(Botao(650,200,380,55,"Começar jogo",LILAS,PRETO))
+        self.listaBotoes.append(Botao(650,280,380,55,"Resolver automático",LILAS,PRETO))
+        self.listaBotoes.append(Botao(650, 360, 380, 55, "Recomeçar", LILAS, PRETO))
 
         #começa um jogo novo e mostra o estado final ao inicializar 
         #o jogo é desenhado na tela
@@ -216,16 +220,36 @@ class Jogo:
 
         #cria um timer
         ElemGraficos(780,35,"%.2f" % self.tempo).draw(self.screen)
-
+        
         #coloca o elemento na tela caso o player ganhe!
         if(self.ganhou):
-            ElemGraficos(200,500,"Parabéns!!! Você ganhou :D").draw(self.screen)
 
-        pygame.display.flip()
-        
-        #coloca sem solução na tela, caso o puzzle não tenha solução
+            if self.tempo_tela is None:
+                # se é a primeira vez que ganhou, salva o tempo atual
+                self.tempo_tela = pygame.time.get_ticks()
+            
+            #coloca frase de que ganhou na tela
+            ElemGraficos(200,550,"Parabéns!!! Você ganhou :D").draw(self.screen)
+
+            #deixa a frase na tela por 3 segundos
+            if pygame.time.get_ticks() - self.tempo_tela >= 3000:
+                # remove a mensagem após 3 segundos
+                self.ganhou = False
+                self.tempo_tela = None
+            
+        #coloca sem solução na tela, caso o puzzle não tenha solução usando a mesma lógica acima
         if(self.sem_solucao):
-            ElemGraficos(200,500,"Sem solução :(").draw(self.screen)
+
+            if self.tempo_tela is None:
+                self.tempo_tela = pygame.time.get_ticks()
+
+            ElemGraficos(200,550,"Sem solução :(").draw(self.screen)
+
+            if pygame.time.get_ticks() - self.tempo_tela >= 3000:
+                # remove a mensagem após 3 segundos
+                self.sem_solucao = False
+                self.tempo_tela = None
+            
 
         pygame.display.flip()
 
@@ -275,6 +299,7 @@ class Jogo:
 
                         #verifica qual botão foi clicado e seta as variáveis necessárias
                         if(botao.texto == "Gerar Aleatório"):
+                            self.novo()
                             self.tempo_aleatorio = 0
                             self.cria_aleatorio = True
 
