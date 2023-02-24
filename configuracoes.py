@@ -8,7 +8,7 @@ CINZA_CLARO = (100, 100, 100)
 
 #Configurações do jogo, tamanho, titulo
 LARGURA = 1100
-ALTURA = 641
+ALTURA = 700
 FPS = 60
 TITULO = "Quebra cabeça de 8 peças"
 TAM_QUADRADO = 170

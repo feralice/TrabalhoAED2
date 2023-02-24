@@ -1,7 +1,7 @@
 import pygame
 import random
 import time
-from Configuracoes import *
+from configuracoes import *
 from Sprites import *
 from Soluciona import buscaInformada
 
@@ -46,10 +46,13 @@ class Jogo:
 
         #variável para controlar o resolvimento automatico
         self.resolve_aut = False
+        self.imprime_passos = False
+        self.num_passos = None
 
         #variaveis para controlar o tempo de frases na tela
         self.clock = pygame.time.Clock()
         self.tempo_tela = None
+        
 
     #função para criar o jogo com o estado final que desejamos
     def cria_jogo(self):
@@ -180,11 +183,10 @@ class Jogo:
             print(self.passos)
         
             if(self.caminho != -1 and self.contador != len(self.caminho)):
-                    
                     self.quadrados_lista = self.caminho[self.contador]
                     self.draw_quadrados()
-                    pygame.time.delay(800)
                     self.contador += 1
+                    pygame.time.delay(700)
             elif(self.caminho == -1 and self.passos == -1):
                     self.resolve_aut = False
                     self.sem_solucao = True
@@ -193,6 +195,8 @@ class Jogo:
                 
             else:
                 self.resolve_aut = False
+                self.imprime_passos = True
+                
         
         #chama novamente a função para sempre atualizar o jogo
         self.sprites.update()
@@ -224,26 +228,45 @@ class Jogo:
         #coloca o elemento na tela caso o player ganhe!
         if(self.ganhou):
 
-            if self.tempo_tela is None:
-                # se é a primeira vez que ganhou, salva o tempo atual
-                self.tempo_tela = pygame.time.get_ticks()
-            
-            #coloca frase de que ganhou na tela
-            ElemGraficos(200,550,"Parabéns!!! Você ganhou :D").draw(self.screen)
+            if(self.imprime_passos):
 
-            #deixa a frase na tela por 3 segundos
-            if pygame.time.get_ticks() - self.tempo_tela >= 3000:
-                # remove a mensagem após 3 segundos
-                self.ganhou = False
-                self.tempo_tela = None
-            
+                if self.tempo_tela is None:
+                    # se é a primeira vez que ganhou, salva o tempo atual
+                    self.tempo_tela = pygame.time.get_ticks()
+                
+                    #coloca frase de que ganhou na tela
+                    self.num_passos = "Número de passos: " + str(self.passos)
+
+                ElemGraficos(250,580,self.num_passos).draw(self.screen)
+
+                #deixa a frase na tela por 7 segundos
+                if pygame.time.get_ticks() - self.tempo_tela >= 7000:
+                    # remove a mensagem após 7 segundos
+                    self.ganhou = False
+                    self.tempo_tela = None
+                    self.imprime_passos = False
+            else:
+                
+                if self.tempo_tela is None:
+                    # se é a primeira vez que ganhou, salva o tempo atual
+                    self.tempo_tela = pygame.time.get_ticks()
+
+                #coloca frase de que ganhou na tela
+                ElemGraficos(200,580,"Parabéns!!! Você ganhou :D").draw(self.screen)
+
+                #deixa a frase na tela por 3 segundos
+                if pygame.time.get_ticks() - self.tempo_tela >= 3000:
+                    # remove a mensagem após 3 segundos
+                    self.ganhou = False
+                    self.tempo_tela = None
+
         #coloca sem solução na tela, caso o puzzle não tenha solução usando a mesma lógica acima
         if(self.sem_solucao):
 
             if self.tempo_tela is None:
                 self.tempo_tela = pygame.time.get_ticks()
 
-            ElemGraficos(200,550,"Sem solução :(").draw(self.screen)
+            ElemGraficos(200,580,"Sem solução :(").draw(self.screen)
 
             if pygame.time.get_ticks() - self.tempo_tela >= 3000:
                 # remove a mensagem após 3 segundos
