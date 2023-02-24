@@ -1,5 +1,5 @@
 import pygame
-from Configuracoes import *
+from configuracoes import *
 
 """Módulo para os objetos gráficos"""
 
@@ -69,14 +69,12 @@ class ElemGraficos:
         self.x = x
         self.y = y
         self.texto = texto
-        
 
     #desenha na tela
     def draw(self,screen):
         font = pygame.font.SysFont("Consolas",50) #escolhe a fonte
         texto = font.render(self.texto, True, LILAS)
         screen.blit(texto, (self.x,self.y))
-
             
 
 #Classe para os botões da tela
